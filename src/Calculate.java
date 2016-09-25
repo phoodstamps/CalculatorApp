@@ -1,5 +1,6 @@
 //*******************************************************************
-// Calculate class
+// Calculate class - has all methods for calculation as required by
+// any Calculator classes
 //
 // @author Ryan Estevez
 // @version 1.0
@@ -12,77 +13,48 @@ public class Calculate {
    private int num2;
    private char oper;
    private int answer;
+   private double dNums[];
+   private int iNums[];
 
+   // Constructor for basic calculations
    public Calculate(int num1, int num2, char oper) {
       this.num1 = num1;
       this.num2 = num2;
       this.oper = oper;
    }
    
-   // Accessor Methods
-   public int getNum1() {
-      return num1;
-   }
-  
-   public int getNum2() {
-      return num2;
+   // Prints the result of calculation.
+   public void getResult() {
+      System.out.println(num1 + " " + oper + " " + num2 + " " + "= " + answer);
    }
    
-   public char getOper() {
-      return oper;
-   }
-  
-   public int getAnswer() {
-      return answer;
-   }
-  
-   // Mutator Methods
-   public void setNum1(int num1) {
-      this.num1 = num1;
-   }
-  
-   public void setNum2(int num2) {
-      this.num2 = num2;
-   }
-   
-   public void setOper(char oper) {
-      this.oper = oper;
-   }
-   
-   public void setAnswer(int answer) {
-      this.answer = answer;
+   // Calculates result based on the numbers and operator inputted by user.
+   public void doCalculation() {
+      switch (oper) {
+         case '+' :
+            answer = num1 + num2;
+            break;
+         case '-' :
+            answer = num1 - num2;
+            break;
+         case '*' :
+            answer = num1 * num2;
+            break;
+         case '/' :
+            answer = num1 / num2;
+            break;
+         default :
+           System.out.println("Invalid operator was entered!");
+           System.exit(0);             
+      }
+      getResult();
    }
    
-   // Displays user input and variables
+   // Displays user input and variables for testing purposes
    public void printValues() {
       System.out.println("Num1 = " + num1);
       System.out.println("Num2 = " + num2);
       System.out.println("oper = " + oper);
       System.out.println("Answer = " + answer);
-   }
-   
-   // Add
-   public int add(int num1, int num2) {
-      return num1 + num2;
-   }
-  
-   // Subtract
-   public int sub(int num1, int num2) {
-      return num1 - num2;
-   }
-  
-   // Multiply
-   public int mult(int num1, int num2) {
-      return num1 * num2;
-   }
-  
-   // Divide
-   public int div(int num1, int num2) {
-      return num1 / num2;
-   }
-
-   // Deciphers input and decides what operation to use
-   private void inputLogic(String input) {
-    
    }
 }

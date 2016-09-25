@@ -22,6 +22,7 @@ public class Calculator {
       Scanner scan = new Scanner(System.in);
       System.out.println("Enter Calculation: (EX:1+1)");
       input = scan.nextLine();
+      saveInput();
    }
    
    // Extracts numbers and operand from input and assigns to variables
@@ -61,6 +62,7 @@ public class Calculator {
          }
       }
       Calculate c = new Calculate(num1, num2, oper);
+      c.doCalculation();
       //c.printValues();
    } 
 }

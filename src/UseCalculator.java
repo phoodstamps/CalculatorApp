@@ -10,6 +10,5 @@ public class UseCalculator {
   {
     Calculator calc = new Calculator();
     calc.userInput();
-    calc.saveInput();
   }
 }
