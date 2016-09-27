@@ -33,7 +33,7 @@ public class Calculator {
       char opers[] = new char[1];
       int count = 0;
       String line = input;
-      String pattern = "(\\+?\\s*\\d+\\.?\\d*|\\-?\\s*\\d+\\.?\\d*|[\\+\\-\\*\\/])";
+      String pattern = "(\\+?\\s*\\d+\\.?\\d*|\\-?\\s*\\d+\\.?\\d*|\\-?\\s*\\d*\\.?\\d+|[\\+\\-\\*\\/])";
       
       //Creates Pattern object
       Pattern r = Pattern.compile(pattern);
