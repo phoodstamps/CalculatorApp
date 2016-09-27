@@ -11,6 +11,7 @@ import java.util.Scanner;
 // Calculator Class
 public class Calculator {
    private String input;
+   
   
    // Default Constructor
    public Calculator() {
@@ -27,11 +28,12 @@ public class Calculator {
    
    // Extracts numbers and operand from input and assigns to variables
    public void saveInput() {
-      int num1 = 0, num2 = 0;
-      char oper = ' ';
+      //int iNums[] = new int[2];
+      double dNums[] = new double[2]; 
+      char opers[] = new char[1];
       int count = 0;
       String line = input;
-      String pattern = "(\\+?\\s*\\d+|\\-?\\s*\\d+|[\\+\\-\\*\\/])";
+      String pattern = "(\\+?\\s*\\d+\\.?\\d*|\\-?\\s*\\d+\\.?\\d*|[\\+\\-\\*\\/])";
       
       //Creates Pattern object
       Pattern r = Pattern.compile(pattern);
@@ -42,27 +44,27 @@ public class Calculator {
       // Finds any matches within input
       while (m.find()) {
          if (count == 0) {
-            // First match should be assigned to num1
-            num1 = Integer.parseInt((m.group()).replaceAll("\\s+",""));
+            // First match should be assigned to either iNum or dNum
+            dNums[0] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
             count++;
          }
          else if (count == 1) {
             // Second match should be assigned to oper
-            oper = (m.group()).charAt(0);
+            opers[0] = (m.group()).charAt(0);
             if (m.group().length() > 1) {
                // If the matcher grabs both the operator and second number
                // NOTE: This only happens when subtracting
-               num2 = Integer.parseInt((m.group()).substring(1).replaceAll("\\s+",""));
+               dNums[1] = Double.parseDouble((m.group()).substring(1).replaceAll("\\s+",""));
             }
             count++;
          }
          else if (count == 2) {
             // Third match should be assigned to num2
-            num2 = Integer.parseInt((m.group()).replaceAll("\\s+",""));
+            dNums[1] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
          }
       }
-      Calculate c = new Calculate(num1, num2, oper);
+      Calculate c = new Calculate(dNums, opers);
       c.doCalculation();
-      //c.printValues();
+      c.printValues();
    } 
 }

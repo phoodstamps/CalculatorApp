@@ -9,39 +9,43 @@
 import java.lang.Math;
 
 public class Calculate {
-   private int num1;
-   private int num2;
-   private char oper;
-   private int answer;
+   private char opers[];
+   private double dAnswer;
    private double dNums[];
-   private int iNums[];
 
    // Constructor for basic calculations
-   public Calculate(int num1, int num2, char oper) {
-      this.num1 = num1;
-      this.num2 = num2;
-      this.oper = oper;
+   public Calculate(double dNums[], char opers[]) {
+      this.dNums = dNums;
+      this.opers = opers;
    }
    
    // Prints the result of calculation.
    public void getResult() {
-      System.out.println(num1 + " " + oper + " " + num2 + " " + "= " + answer);
+      System.out.println(parse(dNums[0]) + " " + opers[0] + " " + parse(dNums[1]) + " " + "= " + parse(dAnswer));
+   }
+   
+   // Returns the value as a string in either int or double format
+   private String parse(double val) {
+      if ((int) val == val) {
+         return Integer.toString((int) val);
+      }
+      return String.valueOf(val);
    }
    
    // Calculates result based on the numbers and operator inputted by user.
    public void doCalculation() {
-      switch (oper) {
+      switch (opers[0]) {
          case '+' :
-            answer = num1 + num2;
+            dAnswer = dNums[0] + dNums[1];
             break;
          case '-' :
-            answer = num1 - num2;
+            dAnswer = dNums[0] - dNums[1];
             break;
          case '*' :
-            answer = num1 * num2;
+            dAnswer = dNums[0] * dNums[1];
             break;
          case '/' :
-            answer = num1 / num2;
+            dAnswer = dNums[0] / dNums[1];
             break;
          default :
            System.out.println("Invalid operator was entered!");
@@ -52,9 +56,9 @@ public class Calculate {
    
    // Displays user input and variables for testing purposes
    public void printValues() {
-      System.out.println("Num1 = " + num1);
-      System.out.println("Num2 = " + num2);
-      System.out.println("oper = " + oper);
-      System.out.println("Answer = " + answer);
+      System.out.println("Num1 = " + parse(dNums[0]));
+      System.out.println("Num2 = " + parse(dNums[1]));
+      System.out.println("oper = " + opers[0]);
+      System.out.println("Answer = " + parse(dAnswer));
    }
 }
