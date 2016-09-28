@@ -44,7 +44,7 @@ public class Calculator {
       // Finds any matches within input
       while (m.find()) {
          if (count == 0) {
-            // First match should be assigned to either iNum or dNum
+            // First match should be assigned dNum
             dNums[0] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
             count++;
          }
@@ -59,7 +59,7 @@ public class Calculator {
             count++;
          }
          else if (count == 2) {
-            // Third match should be assigned to num2
+            // Third match should be assigned to dNum
             dNums[1] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
          }
       }

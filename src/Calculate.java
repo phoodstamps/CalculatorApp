@@ -36,6 +36,7 @@ public class Calculate {
    
    /**
     * Rounds the double value
+    * NOTE: Rounding still needs some work. I only want to round for certain situations that don't lose precision.
     * Source: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
     * @param value
     * @param places
