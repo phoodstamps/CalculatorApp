@@ -9,6 +9,10 @@ public class UseCalculator {
   public static void main(String[] args)
   {
     Calculator calc = new Calculator();
+    Calculate doCalc = new Calculate();
     calc.userInput();
+    calc.printValues();
+    doCalc.orderOfOperations(calc.getNumsList(), calc.getOpersList());
+    doCalc.getResult();
   }
 }

@@ -7,15 +7,36 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 // Calculator Class
 public class Calculator {
    private String input;
+   private ArrayList numsList;
+   private ArrayList opersList;
    
   
    // Default Constructor
    public Calculator() {
       input = " ";
+      numsList = new ArrayList<Double>();
+      opersList = new ArrayList<Character>();
+   }
+   
+   public ArrayList getNumsList() {
+      return numsList;
+   }
+   
+   public ArrayList getOpersList() {
+      return opersList;
+   }
+   
+   public void setNumsList(ArrayList newNumsList) {
+      numsList = newNumsList;
+   }
+   
+   public void setOpersList(ArrayList newOpersList) {
+      opersList = newOpersList;
    }
   
    // Takes user input
@@ -25,46 +46,60 @@ public class Calculator {
       input = scan.nextLine();
       saveInput();
    }
-   
+   //TODO: Still need to fix issue when first number entered is negative. It saves the negative operator in the operList
    // Extracts numbers and operand from input and assigns to variables
    public void saveInput() {
-      //int iNums[] = new int[2];
-      double dNums[] = new double[2]; 
-      char opers[] = new char[1];
       int count = 0;
       String line = input;
-      String pattern = "(\\+?\\s*\\d+\\.?\\d*|\\-?\\s*\\d+\\.?\\d*|\\-?\\s*\\d*\\.?\\d+|[\\+\\-\\*\\/])";
+      String pattern = "([\\+\\-\\*\\/\\^\\+\\-]{2}\\d+\\.?\\d*|\\d+\\.?\\d*|[\\+\\-\\*\\/\\^\\(\\)])";
       
       //Creates Pattern object
       Pattern r = Pattern.compile(pattern);
       
-      //Creates matcher object
-      Matcher m = r.matcher(line);
+      // Creates matcher object
+      Matcher m = r.matcher(line.replaceAll("\\s+",""));
       
       // Finds any matches within input
       while (m.find()) {
-         if (count == 0) {
-            // First match should be assigned dNum
-            dNums[0] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
-            count++;
-         }
-         else if (count == 1) {
-            // Second match should be assigned to oper
-            opers[0] = (m.group()).charAt(0);
-            if (m.group().length() > 1) {
-               // If the matcher grabs both the operator and second number
-               // NOTE: This only happens when subtracting
-               dNums[1] = Double.parseDouble((m.group()).substring(1).replaceAll("\\s+",""));
+         // If a number or decimal was found
+         if (m.group().matches("\\d+\\.?\\d*")) {
+            if (opersList.size()-1 > -1 && (char) opersList.get(opersList.size()-1) == '-') {
+               opersList.set(opersList.size()-1, '+');
+               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+",""))*-1);
             }
-            count++;
+            else {
+               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
+            }
          }
-         else if (count == 2) {
-            // Third match should be assigned to dNum
-            dNums[1] = Double.parseDouble((m.group()).replaceAll("\\s+",""));
+         // If a negative value was entered
+         else if (m.group().matches("[\\+\\-\\*\\/\\^]{2}\\d+\\.?\\d*")) {
+            opersList.add(m.group().charAt(0));
+            numsList.add(Double.parseDouble((m.group().substring(1)).replaceAll("\\s+","")));
+            
+            /**      
+            if (opersList.size() == numsList.size()) {
+               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
+            }
+            else {
+               opersList.add(m.group().charAt(0));
+               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
+            }*/
+         }
+         // If an operator was found
+         else if (m.group().matches("[\\+\\-\\*\\/\\^\\(\\)]")) {
+            opersList.add(m.group().charAt(0));
+         }
+         else {
+            System.out.println("ERROR! YOU MUST ENTER NUMBERS OR OPERATORS IN EXPRESSION!");
+            System.exit(0);
          }
       }
-      Calculate c = new Calculate(dNums, opers);
-      c.doCalculation();
-      c.printValues();
-   } 
+   }
+   
+   // Displays user input and variables for testing purposes
+   public void printValues() {
+      System.out.println("Numbers: " + numsList);
+      System.out.println("Operartors: " + opersList);
+   }
+    
 }

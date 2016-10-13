@@ -9,21 +9,20 @@
 import java.lang.Math;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+
 
 public class Calculate {
-   private char opers[];
    private double dAnswer;
-   private double dNums[];
 
    // Constructor for basic calculations
-   public Calculate(double dNums[], char opers[]) {
-      this.dNums = dNums;
-      this.opers = opers;
+   public Calculate() { 
+      dAnswer = 0;
    }
    
    // Prints the result of calculation.
    public void getResult() {
-      System.out.println(parse(dNums[0]) + " " + opers[0] + " " + parse(dNums[1]) + " " + "= " + parse(dAnswer));
+      System.out.println("Answer: " + dAnswer);
    }
    
    // Returns the value as a string in either int or double format
@@ -48,35 +47,50 @@ public class Calculate {
 	    BigDecimal bd = new BigDecimal(value);
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
-	}
+	} 
    
-   // Calculates result based on the numbers and operator inputted by user.
-   public void doCalculation() {
-      switch (opers[0]) {
-         case '+' :
-            dAnswer = dNums[0] + dNums[1];
-            break;
-         case '-' :
-            dAnswer = dNums[0] - dNums[1];
-            break;
-         case '*' :
-            dAnswer = round(dNums[0] * dNums[1], 2);
-            break;
-         case '/' :
-            dAnswer = dNums[0] / dNums[1];
-            break;
-         default :
-           System.out.println("Invalid operator was entered!");
-           System.exit(0);             
+   // Searches through expression to decide what operation to do first
+   public void orderOfOperations(ArrayList<Double> numsList, ArrayList<Character> opersList) {
+      char[] operTarget = {'^','*','/','+','-'};   // This is used to go through each order of operation
+      // Loops through each operator in order of operation
+      for (int i = 0; i < operTarget.length; i++) {
+         int x = 0;
+         // Loops through each operator in the expression
+         while (opersList.size() != 0 && x < opersList.size()) {
+            // If an operator matches, it calculates the the two numbers with it in doCalculation()
+            if (opersList.get(x) == operTarget[i]) {
+               dAnswer = doCalculation(numsList.get(x), numsList.get(x+1), opersList.get(x));
+               numsList.set(x, dAnswer);
+               numsList.remove(x+1);
+               opersList.remove(x);
+            }
+            else {
+               x++;
+            }
+         }
       }
-      getResult();
    }
    
-   // Displays user input and variables for testing purposes
-   public void printValues() {
-      System.out.println("Num1 = " + parse(dNums[0]));
-      System.out.println("Num2 = " + parse(dNums[1]));
-      System.out.println("oper = " + opers[0]);
-      System.out.println("Answer = " + parse(dAnswer));
+   // Calculates result based on the numbers and operator inputted by user.
+   public double doCalculation(double dNum1, double dNum2, char oper) {
+      double answer = 0.0;
+      switch (oper) {
+         case '+' :
+            answer = dNum1 + dNum2;
+            break;
+         case '-' :
+            answer = dNum1 - dNum2;
+            break;
+         case '*' :
+            answer = round(dNum1 * dNum2, 2);
+            break;
+         case '/' :
+            answer = dNum1 / dNum2;
+            break;
+         case '^' :
+            answer = Math.pow(dNum1, dNum2);
+            break;             
+      }
+      return answer;
    }
 }
