@@ -26,7 +26,9 @@ public class Calculate {
    }
    
    // Returns the value as a string in either int or double format
-   private String parse(double val) {
+   // Currently not being used.
+   @SuppressWarnings("unused")
+private String parse(double val) {
       if ((int) val == val) {
          return Integer.toString((int) val);
       }

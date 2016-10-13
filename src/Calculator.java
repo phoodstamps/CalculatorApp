@@ -12,30 +12,28 @@ import java.util.ArrayList;
 // Calculator Class
 public class Calculator {
    private String input;
-   private ArrayList numsList;
-   private ArrayList opersList;
+   private ArrayList<Double> numsList = new ArrayList<Double>();
+   private ArrayList<Character> opersList = new ArrayList<Character>();
    
   
    // Default Constructor
    public Calculator() {
       input = " ";
-      numsList = new ArrayList<Double>();
-      opersList = new ArrayList<Character>();
    }
    
-   public ArrayList getNumsList() {
+   public ArrayList<Double> getNumsList() {
       return numsList;
    }
    
-   public ArrayList getOpersList() {
+   public ArrayList<Character> getOpersList() {
       return opersList;
    }
    
-   public void setNumsList(ArrayList newNumsList) {
+   public void setNumsList(ArrayList<Double> newNumsList) {
       numsList = newNumsList;
    }
    
-   public void setOpersList(ArrayList newOpersList) {
+   public void setOpersList(ArrayList<Character> newOpersList) {
       opersList = newOpersList;
    }
   
@@ -44,12 +42,11 @@ public class Calculator {
       Scanner scan = new Scanner(System.in);
       System.out.println("Enter Calculation: (EX:1+1)");
       input = scan.nextLine();
-      saveInput();
+      scan.close();
    }
    //TODO: Still need to fix issue when first number entered is negative. It saves the negative operator in the operList
    // Extracts numbers and operand from input and assigns to variables
    public void saveInput() {
-      int count = 0;
       String line = input;
       String pattern = "([\\+\\-\\*\\/\\^\\+\\-]{2}\\d+\\.?\\d*|\\d+\\.?\\d*|[\\+\\-\\*\\/\\^\\(\\)])";
       
