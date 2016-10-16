@@ -44,13 +44,13 @@ public class Calculator {
       input = scan.nextLine();
       scan.close();
    }
-   //TODO: Still need to fix issue when first number entered is negative. It saves the negative operator in the operList
+   
    // Extracts numbers and operand from input and assigns to variables
    public void saveInput() {
       String line = input;
       String pattern = "([\\+\\-\\*\\/\\^\\+\\-]{2}\\d+\\.?\\d*|\\d+\\.?\\d*|[\\+\\-\\*\\/\\^\\(\\)])";
       
-      //Creates Pattern object
+      // Creates Pattern object
       Pattern r = Pattern.compile(pattern);
       
       // Creates matcher object
@@ -61,8 +61,16 @@ public class Calculator {
          // If a number or decimal was found
          if (m.group().matches("\\d+\\.?\\d*")) {
             if (opersList.size()-1 > -1 && (char) opersList.get(opersList.size()-1) == '-') {
-               opersList.set(opersList.size()-1, '+');
-               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+",""))*-1);
+               // Removes the first negative operator if it was suppose to be combined with first number entered
+               // to create a negative number
+               if (numsList.size() == 0) {
+                  opersList.remove(0);
+                  numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+",""))*-1);
+               }
+               else {
+                  opersList.set(opersList.size()-1, '+');
+                  numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+",""))*-1);
+               }
             }
             else {
                numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
@@ -72,19 +80,14 @@ public class Calculator {
          else if (m.group().matches("[\\+\\-\\*\\/\\^]{2}\\d+\\.?\\d*")) {
             opersList.add(m.group().charAt(0));
             numsList.add(Double.parseDouble((m.group().substring(1)).replaceAll("\\s+","")));
-            
-            /**      
-            if (opersList.size() == numsList.size()) {
-               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
-            }
-            else {
-               opersList.add(m.group().charAt(0));
-               numsList.add(Double.parseDouble((m.group()).replaceAll("\\s+","")));
-            }*/
          }
          // If an operator was found
          else if (m.group().matches("[\\+\\-\\*\\/\\^\\(\\)]")) {
-            opersList.add(m.group().charAt(0));
+            if (numsList.size() == 0 && m.group().charAt(0) != '-') {
+               System.out.println("ERROR! Must enter number before operator unless number is negative!");
+               System.exit(0);
+            }
+            opersList.add(m.group().charAt(0));   
          }
          else {
             System.out.println("ERROR! YOU MUST ENTER NUMBERS OR OPERATORS IN EXPRESSION!");
